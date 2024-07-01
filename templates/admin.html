@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Administrador de Tareas diarias</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estiload.css') }}">
+</head>
+<body>
+    <h1>Administrador de tareas</h1>
+    <form method="post" action="/admin/assign">
+        <select name="username">
+            <option value="user1">Usuario 1</option>
+            <option value="user2">Usuario 2</option>
+            <option value="user3">Usuario 3</option>
+        </select>
+        <input type="text" name="task_description" placeholder="Descripción de la tarea">
+        <button type="submit">Asignar Tarea</button>
+    </form>
+    <h2>Tareas</h2>
+    {% for user, tasks in users_tasks.items() %}
+        <h3>{{ user }}</h3>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    {{ task.description }} - {% if task.completed %}Completada{% else %}Pendiente{% endif %}
+                    <form method="post" action="/admin/pop_task" style="display:inline;">
+                        <input type="hidden" name="username" value="{{ user }}">
+                        <button type="submit" class="delete-button">Eliminar Tarea</button>
+                    </form>
+                    <form method="post" action="/admin/replace_task" style="display:inline;">
+                        <input type="hidden" name="username" value="{{ user }}">
+                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                        <input type="text" name="new_description" placeholder="Reemplazar la tarea  ">
+                        <button type="submit" class="replace-button">Reemplazar Tarea</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    <button id="homeButton">Inicio</button>
+
+    <script type="text/javascript">
+        var homeUrl = "{{ url_for('index') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

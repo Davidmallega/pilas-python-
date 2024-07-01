@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilouser.css') }}">
+</head>
+<body>
+    <h1>Panel 3</h1>
+    <div class="tasks-container">
+        {% for task in tasks %}
+            <div class="task">
+                {{ task.description }} - {% if task.completed %}Completed{% else %}Pending{% endif %}
+                {% if not task.completed %}
+                    <form method="post" action="/user/{{ username }}/complete" class="inline-form">
+                        <input type="hidden" name="task_index" value="{{ loop.index0 }}">
+                        <button type="submit">Completar Tarea</button>
+                    </form>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <button id="homeButton">Inicio</button>
+
+    <script type="text/javascript">
+        var homeUrl = "{{ url_for('index') }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+
